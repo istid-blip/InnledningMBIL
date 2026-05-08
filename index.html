@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caser i Luftfartsmaterialer</title>
+    <style>
+        :root {
+            --primary-blue: #0056b3;
+            --light-bg: #f4f7f6;
+            --text-dark: #333;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            max-width: 800px;
+        }
+        .container {
+            display: flex;
+            gap: 40px;
+            max-width: 1000px;
+            width: 100%;
+            flex-wrap: wrap;
+        }
+        .interactive-menu {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .part-btn {
+            background-color: white;
+            border: 2px solid var(--primary-blue);
+            color: var(--primary-blue);
+            padding: 15px 20px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+        .part-btn:hover, .part-btn.active {
+            background-color: var(--primary-blue);
+            color: white;
+            transform: translateX(10px);
+        }
+        .info-panel {
+            flex: 2;
+            min-width: 300px;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            border-top: 5px solid var(--primary-blue);
+        }
+        .info-panel h2 {
+            margin-top: 0;
+            color: var(--primary-blue);
+        }
+        .material-tag {
+            display: inline-block;
+            background: #e2e8f0;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Caser: Når materialer svikter</h1>
+        <p>Gjennom luftfartshistorien har vi lært mye om materialer og utmatting på den harde måten. Velg en hendelse under for å lære hva som skjedde og hva vi lærte.</p>
+    </header>
+
+    <div class="container">
+        <div class="interactive-menu" id="menu">
+            </div>
+
+        <div class="info-panel" id="panel">
+            <h2>Velkommen til første modul!</h2>
+            <p>Klikk på en av casene til venstre for å utforske de historiske hendelsene som har formet vår forståelse av materialer i luftfart.</p>
+        </div>
+    </div>
+
+    <script>
+        // Database med case-informasjon basert på PDF-dokumentet
+        const caseData = {
+            comet: {
+                title: "De Havilland DH. 106 Comet",
+                tags: ["Metallutmatting", "Trykkabin", "Testmetodikk"],
+                description: "Etter flere uforklarlige havarier ble luftfartsindustrien for første gang kjent med metallutmatting i trykkabiner. Flyene hadde gått i oppløsning i luften på grunn av spenninger som hopet seg opp rundt skroggjennomføringer (som vinduer og antenner).",
+                funFact: "En tidlig testseksjon av flyet besto utmattelsestester, men dette ga en falsk trygghet. Testseksjonen hadde først blitt utsatt for et ekstremt høyt overtrykk som strakk metallet (plastisk deformasjon), noe som paradoksalt nok gjorde den testede delen mye sterkere enn flyene som faktisk ble satt i trafikk!"
+            },
+            aloha: {
+                title: "Aloha Flight 243",
+                tags: ["Korrosjon", "Limte fuger", "Vedlikehold"],
+                description: "I 1988 revnet taket på en Boeing 737-200 i luften. Ulykken skyldtes svikt i kaldlimte fuger og en betydelig mengde skjulte utmattingssprekker i aluminiumsskroget. Høy frekvens av korte flygninger i et fuktig, maritimt klima på Hawaii førte til massiv slitasje og korrosjon.",
+                funFact: "Ulykken ble et symbol på utfordringene med en aldrende flyflåte, og førte til at flymyndighetene krevde mye strengere overvåking og omfattende forebyggende korrosjonsprogrammer."
+            },
+            superpuma: {
+                title: "Airbus Super Puma (Turøy)",
+                tags: ["Planetgir", "Skjult sprekkvekst", "Sertifisering"],
+                description: "I 2016 løsnet hovedrotoren på et Super Puma-helikopter under flukt. Årsaken var et utmattingsbrudd i et planetgir i hovedgirboksen. Sprekken startet i en bitteliten overflateskade (micro-pit) og vokste usynlig under den herdede overflaten.",
+                funFact: "Sprekken produserte nesten ingen metallpartikler (avskalling) underveis. Dette gjorde at verken helikopterets magnetplugger eller det avanserte vibrasjonsovervåkingssystemet (HUMS) klarte å fange opp feilen før det var for sent. Ulykken endret hvordan man forstår sprekkutvikling i overflateherdede lager."
+            }
+        };
+
+        const menu = document.getElementById('menu');
+        const panel = document.getElementById('panel');
+
+        function updatePanel(key) {
+            const data = caseData[key];
+            
+            document.querySelectorAll('.part-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('btn-' + key).classList.add('active');
+
+            let tagsHTML = data.tags.map(m => `<span class="material-tag">${m}</span>`).join('');
+            
+            panel.innerHTML = `
+                <h2>${data.title}</h2>
+                <div style="margin-bottom: 20px;">${tagsHTML}</div>
+                <p><strong>Hva skjedde?</strong> ${data.description}</p>
+                <div style="background: #eef2f5; padding: 15px; border-left: 4px solid var(--primary-blue); margin-top: 20px;">
+                    <strong>Viktig lærdom:</strong> ${data.funFact}
+                </div>
+            `;
+        }
+
+        for (const [key, data] of Object.entries(caseData)) {
+            const btn = document.createElement('button');
+            btn.className = 'part-btn';
+            btn.id = 'btn-' + key;
+            btn.textContent = data.title;
+            btn.onclick = () => updatePanel(key);
+            menu.appendChild(btn);
+        }
+    </script>
+</body>
+</html>
