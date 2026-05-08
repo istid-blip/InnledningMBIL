@@ -3,153 +3,254 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Caser i Luftfartsmaterialer</title>
+    <title>Materialer i Luftfart - Casestudier</title>
     <style>
         :root {
-            --primary-blue: #0056b3;
-            --light-bg: #f4f7f6;
-            --text-dark: #333;
+            --primary-blue: #1a4a7c;
+            --accent-blue: #3498db;
+            --light-bg: #f0f2f5;
+            --card-white: #ffffff;
+            --text-dark: #2c3e50;
         }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--light-bg);
             color: var(--text-dark);
             margin: 0;
-            padding: 20px;
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
         }
-        header {
-            text-align: center;
-            margin-bottom: 40px;
-            max-width: 800px;
-        }
-        .container {
-            display: flex;
-            gap: 40px;
-            max-width: 1000px;
+
+        .wrapper {
             width: 100%;
-            flex-wrap: wrap;
+            max-width: 1100px;
+            padding: 40px 20px;
+            text-align: center;
         }
-        .interactive-menu {
-            flex: 1;
-            min-width: 300px;
+
+        /* --- START-SKJERM (GRID) --- */
+        #selection-screen h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: var(--primary-blue);
+        }
+
+        #selection-screen .intro-text {
+            font-size: 1.2rem;
+            margin-bottom: 50px;
+            opacity: 0.8;
+        }
+
+        .case-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .case-card {
+            background: var(--card-white);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             display: flex;
             flex-direction: column;
-            gap: 15px;
-        }
-        .part-btn {
-            background-color: white;
-            border: 2px solid var(--primary-blue);
-            color: var(--primary-blue);
-            padding: 15px 20px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            border: none;
+            padding: 0;
             text-align: left;
         }
-        .part-btn:hover, .part-btn.active {
-            background-color: var(--primary-blue);
-            color: white;
-            transform: translateX(10px);
+
+        .case-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 45px rgba(0,0,0,0.15);
         }
-        .info-panel {
-            flex: 2;
-            min-width: 300px;
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-            border-top: 5px solid var(--primary-blue);
+
+        .case-image-placeholder {
+            width: 100%;
+            height: 200px;
+            background-color: #ddd;
+            background-size: cover;
+            background-position: center;
+            /* HER KAN DU LEGGE TIL BAKGRUNNSBILDE I CSS SENERE */
         }
-        .info-panel h2 {
-            margin-top: 0;
+
+        .case-content {
+            padding: 25px;
+        }
+
+        .case-content h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.4rem;
             color: var(--primary-blue);
         }
-        .material-tag {
-            display: inline-block;
-            background: #e2e8f0;
-            padding: 5px 12px;
+
+        .case-content p {
+            margin: 0;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #555;
+        }
+
+        /* --- DETALJ-SKJERM --- */
+        #detail-screen {
+            display: none; /* Skjult som standard */
+            text-align: left;
+            background: white;
+            padding: 40px;
             border-radius: 20px;
-            font-size: 0.9rem;
-            margin-right: 10px;
-            margin-bottom: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .back-btn {
+            background: none;
+            border: 2px solid var(--accent-blue);
+            color: var(--accent-blue);
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 30px;
+            transition: all 0.2s;
+        }
+
+        .back-btn:hover {
+            background: var(--accent-blue);
+            color: white;
+        }
+
+        .detail-header {
+            border-bottom: 3px solid var(--light-bg);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .tag-container {
+            margin-top: 15px;
+        }
+
+        .tag {
+            background: var(--light-bg);
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
             font-weight: 600;
+            margin-right: 10px;
+        }
+
+        .lesson-box {
+            background: #e7f3ff;
+            border-left: 5px solid var(--accent-blue);
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: 0 10px 10px 0;
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>Caser: Når materialer svikter</h1>
-        <p>Gjennom luftfartshistorien har vi lært mye om materialer og utmatting på den harde måten. Velg en hendelse under for å lære hva som skjedde og hva vi lærte.</p>
-    </header>
+<div class="wrapper">
+    
+    <div id="selection-screen">
+        <h1>Materialteknologi</h1>
+        <p class="intro-text">Velg en historisk case for å starte undervisningen</p>
+        
+        <div class="case-grid">
+            <button class="case-card" onclick="showCase('comet')">
+                <div class="case-image-placeholder" style="background-color: #1a4a7c;">
+                    </div>
+                <div class="case-content">
+                    <h3>DH. 106 Comet</h3>
+                    <p>Lærdommen om metallutmatting og trykkabiner fra verdens første jetfly.</p>
+                </div>
+            </button>
 
-    <div class="container">
-        <div class="interactive-menu" id="menu">
-            </div>
+            <button class="case-card" onclick="showCase('aloha')">
+                <div class="case-image-placeholder" style="background-color: #3498db;"></div>
+                <div class="case-content">
+                    <h3>Aloha Flight 243</h3>
+                    <p>Utfordringer med korrosjon og skjulte sprekker i en aldrende flyflåte.</p>
+                </div>
+            </button>
 
-        <div class="info-panel" id="panel">
-            <h2>Velkommen til første modul!</h2>
-            <p>Klikk på en av casene til venstre for å utforske de historiske hendelsene som har formet vår forståelse av materialer i luftfart.</p>
+            <button class="case-card" onclick="showCase('superpuma')">
+                <div class="case-image-placeholder" style="background-color: #2c3e50;"></div>
+                <div class="case-content">
+                    <h3>Airbus Super Puma</h3>
+                    <p>Når moderne overvåkingssystemer ikke fanger opp skjult sprekkvekst.</p>
+                </div>
+            </button>
         </div>
     </div>
 
-    <script>
-        // Database med case-informasjon basert på PDF-dokumentet
-        const caseData = {
-            comet: {
-                title: "De Havilland DH. 106 Comet",
-                tags: ["Metallutmatting", "Trykkabin", "Testmetodikk"],
-                description: "Etter flere uforklarlige havarier ble luftfartsindustrien for første gang kjent med metallutmatting i trykkabiner. Flyene hadde gått i oppløsning i luften på grunn av spenninger som hopet seg opp rundt skroggjennomføringer (som vinduer og antenner).",
-                funFact: "En tidlig testseksjon av flyet besto utmattelsestester, men dette ga en falsk trygghet. Testseksjonen hadde først blitt utsatt for et ekstremt høyt overtrykk som strakk metallet (plastisk deformasjon), noe som paradoksalt nok gjorde den testede delen mye sterkere enn flyene som faktisk ble satt i trafikk!"
-            },
-            aloha: {
-                title: "Aloha Flight 243",
-                tags: ["Korrosjon", "Limte fuger", "Vedlikehold"],
-                description: "I 1988 revnet taket på en Boeing 737-200 i luften. Ulykken skyldtes svikt i kaldlimte fuger og en betydelig mengde skjulte utmattingssprekker i aluminiumsskroget. Høy frekvens av korte flygninger i et fuktig, maritimt klima på Hawaii førte til massiv slitasje og korrosjon.",
-                funFact: "Ulykken ble et symbol på utfordringene med en aldrende flyflåte, og førte til at flymyndighetene krevde mye strengere overvåking og omfattende forebyggende korrosjonsprogrammer."
-            },
-            superpuma: {
-                title: "Airbus Super Puma (Turøy)",
-                tags: ["Planetgir", "Skjult sprekkvekst", "Sertifisering"],
-                description: "I 2016 løsnet hovedrotoren på et Super Puma-helikopter under flukt. Årsaken var et utmattingsbrudd i et planetgir i hovedgirboksen. Sprekken startet i en bitteliten overflateskade (micro-pit) og vokste usynlig under den herdede overflaten.",
-                funFact: "Sprekken produserte nesten ingen metallpartikler (avskalling) underveis. Dette gjorde at verken helikopterets magnetplugger eller det avanserte vibrasjonsovervåkingssystemet (HUMS) klarte å fange opp feilen før det var for sent. Ulykken endret hvordan man forstår sprekkutvikling i overflateherdede lager."
-            }
-        };
+    <div id="detail-screen">
+        <button class="back-btn" onclick="showHome()">← Tilbake til oversikten</button>
+        
+        <div id="case-data">
+            </div>
+    </div>
 
-        const menu = document.getElementById('menu');
-        const panel = document.getElementById('panel');
+</div>
 
-        function updatePanel(key) {
-            const data = caseData[key];
-            
-            document.querySelectorAll('.part-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById('btn-' + key).classList.add('active');
+<script>
+    const caseData = {
+        comet: {
+            title: "De Havilland DH. 106 Comet",
+            tags: ["Metallutmatting", "Trykkabin", "Spenning"],
+            text: "Gjennom Comet-ulykkene lærte industrien at materialer oppfører seg annerledes under syklisk belastning i en trykkabin. Små sprekker kan vokse fra hjørner på vinduer og andre utsparinger.",
+            lesson: "Viktig lærdom: Tidligere tester ga falsk trygghet fordi overtrykk 'strakk' metallet og gjorde det kunstig sterkt mot utmatting."
+        },
+        aloha: {
+            title: "Aloha Flight 243",
+            tags: ["Korrosjon", "Kaldliming", "MSD"],
+            text: "Denne ulykken viste faren med 'Multiple Site Damage' (MSD), hvor mange små sprekker i et skrog samler seg og fører til en eksplosiv dekompresjon.",
+            lesson: "Viktig lærdom: Miljøfaktorer som fukt og saltvann i kombinasjon med mange flytimer krever ekstreme inspeksjonsrutiner."
+        },
+        superpuma: {
+            title: "Airbus Super Puma (Turøy)",
+            tags: ["Planetgir", "Girkasse", "Sub-surface"],
+            text: "Her sviktet et planetgir på grunn av en utmattingssprekk som startet under overflaten og vokste uten å avgi metallpartikler.",
+            lesson: "Viktig lærdom: Selv de mest avanserte magnetsensorene og vibrasjonsanalysene kan ha blindsoner hvis sprekken vokser skjult."
+        }
+    };
 
-            let tagsHTML = data.tags.map(m => `<span class="material-tag">${m}</span>`).join('');
-            
-            panel.innerHTML = `
+    function showCase(id) {
+        const data = caseData[id];
+        const container = document.getElementById('case-data');
+        
+        const tagsHTML = data.tags.map(t => `<span class="tag">${t}</span>`).join('');
+
+        container.innerHTML = `
+            <div class="detail-header">
                 <h2>${data.title}</h2>
-                <div style="margin-bottom: 20px;">${tagsHTML}</div>
-                <p><strong>Hva skjedde?</strong> ${data.description}</p>
-                <div style="background: #eef2f5; padding: 15px; border-left: 4px solid var(--primary-blue); margin-top: 20px;">
-                    <strong>Viktig lærdom:</strong> ${data.funFact}
-                </div>
-            `;
-        }
+                <div class="tag-container">${tagsHTML}</div>
+            </div>
+            <p style="font-size: 1.2rem; line-height: 1.6;">${data.text}</p>
+            <div class="lesson-box">
+                <strong>Hva lærte vi?</strong><br>
+                ${data.lesson}
+            </div>
+        `;
 
-        for (const [key, data] of Object.entries(caseData)) {
-            const btn = document.createElement('button');
-            btn.className = 'part-btn';
-            btn.id = 'btn-' + key;
-            btn.textContent = data.title;
-            btn.onclick = () => updatePanel(key);
-            menu.appendChild(btn);
-        }
-    </script>
+        document.getElementById('selection-screen').style.display = 'none';
+        document.getElementById('detail-screen').style.display = 'block';
+        window.scrollTo(0, 0);
+    }
+
+    function showHome() {
+        document.getElementById('selection-screen').style.display = 'block';
+        document.getElementById('detail-screen').style.display = 'none';
+    }
+</script>
+
 </body>
 </html>
