@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&family=Merriweather:ital,wght@0,300;0,700;1,300&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Materialer i Luftfart - Casestudier</title>
+    <style>
+        :root {
+            --primary-blue: #1a4a7c;
+            --accent-blue: #3498db;
+            --light-bg: #f4f7f6;
+            --card-white: #ffffff;
+            --text-dark: #2c3e50;
+            --text-body: #4a5568;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Lato', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        h1, h2, h3 {
+            font-weight: 700;
+        }
+
+        .wrapper {
+            width: 100%;
+            max-width: 1100px;
+            padding: 40px 20px;
+            /* text-align: center; (Fjernet for at innhold i artikkel skal flyte bedre) */
+        }
+
+        /* --- START-SKJERM (GRID) --- */
+        #selection-screen {
+            text-align: center;
+        }
+
+        #selection-screen h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: var(--primary-blue);
+        }
+
+        #selection-screen .intro-text {
+            font-size: 1.2rem;
+            margin-bottom: 50px;
+            color: var(--text-body);
+        }
+
+        .case-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .case-card {
+            background: var(--card-white);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            border: none;
+            padding: 0;
+            text-align: left;
+        }
+
+        .case-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 45px rgba(0,0,0,0.15);
+        }
+
+        .case-image-placeholder {
+            width: 100%;
+            height: 200px;
+            background-color: #ddd;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .case-content {
+            padding: 25px;
+        }
+
+        .case-content h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.4rem;
+            color: var(--primary-blue);
+        }
+
+        .case-content p {
+            margin: 0;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: var(--text-body);
+        }
+
+        /* --- DETALJ-SKJERM GENERELT --- */
+        #detail-screen {
+            display: none;
+            background: var(--card-white);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            overflow: hidden;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .top-nav {
+            padding: 20px 40px;
+            background: #fff;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: var(--text-body);
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.2s;
+            padding: 0;
+        }
+
+        .back-btn:hover {
+            color: var(--primary-blue);
+        }
+
+        /* --- FANER (TABS) --- */
+        .tabs-container {
+            display: flex;
+            border-bottom: 2px solid var(--border-color);
+            background: #fafbfc;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 20px;
+            background: none;
+            border: none;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-body);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-btn:hover {
+            background: #f1f5f9;
+            color: var(--primary-blue);
+        }
+
+        .tab-btn.active {
+            color: var(--primary-blue);
+            border-bottom-color: var(--accent-blue);
+            background: #fff;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 40px;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        /* --- ARTIKKEL-DELEN (Tab 1) --- */
+        .article-header {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .article-header h2 {
+            font-size: 2.5rem;
+            color: var(--primary-blue);
+            margin: 0 0 15px 0;
+        }
+
+        .tag-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .tag {
+            background: var(--light-bg);
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--primary-blue);
+            border: 1px solid var(--border-color);
+        }
+
+        .audio-container {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            border: 1px solid var(--border-color);
+        }
+
+        .audio-container p {
+            margin: 0 0 10px 0;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--text-body);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .audio-player {
+            width: 100%;
+        }
+
+        /* Editorial Article Styling */
+        .article-body {
+            font-family: 'Merriweather', serif; /* Serif for bedre lesbarhet i lange tekster */
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .article-body p {
+            margin-bottom: 25px;
+        }
+
+        /* Styling for din HTML (Overskrifter, lister og bilder) */
+        .article-body h4 {
+            font-family: 'Lato', sans-serif;
+            color: var(--primary-blue);
+            font-size: 1.6rem;
+            margin-top: 50px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .article-body ul {
+            margin-bottom: 25px;
+            padding-left: 20px;
+        }
+
+        .article-body li {
+            margin-bottom: 10px;
+        }
+
+        /* Nye bildestiler: Responsiv, sentrert og moderne */
+        .article-body img {
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 40px auto; /* God plass rundt bildene for pusterom */
+        }
+
+        /* Spesialklasse for å vise bilder side-om-side (f.eks to tekniske tegninger) */
+        .image-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr; /* Stables på mobil */
+            gap: 20px;
+            margin: 40px 0;
+        }
+        
+        @media (min-width: 768px) {
+            .image-grid-2 {
+                grid-template-columns: 1fr 1fr; /* Side-om-side på desktop */
+                align-items: center;
+            }
+        }
+        
+        .image-grid-2 img {
+            margin: 0; /* Fjerner auto-margin når de er i grid */
+            width: 100%;
+        }
+
+        .article-image {
+            width: 100%;
+            border-radius: 12px;
+            margin: 30px 0;
+            background-color: #eee;
+            height: 350px; /* Placeholder høyde */
+            object-fit: cover;
+            display: block;
+        }
+
+        .article-caption {
+            font-family: 'Lato', sans-serif;
+            font-size: 0.9rem;
+            color: #718096;
+            text-align: center;
+            margin-top: -20px;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        .lesson-box {
+            background: #e7f3ff;
+            border-left: 5px solid var(--accent-blue);
+            padding: 25px;
+            margin: 40px 0;
+            border-radius: 0 10px 10px 0;
+            font-family: 'Lato', sans-serif;
+        }
+
+        .lesson-box h4 {
+            margin: 0 0 10px 0;
+            color: var(--primary-blue);
+            font-size: 1.2rem;
+        }
+
+        .lesson-box p {
+            margin: 0;
+        }
+
+        /* --- REFLEKSJONS-DELEN (Tab 2) --- */
+        .reflection-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .reflection-prompt {
+            background: var(--primary-blue);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+        }
+
+        .reflection-prompt h3 {
+            margin: 0 0 15px 0;
+            font-size: 1.5rem;
+        }
+
+        .reflection-prompt p {
+            margin: 0;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        .reflection-form textarea {
+            width: 100%;
+            min-height: 300px;
+            padding: 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-family: 'Lato', sans-serif;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            resize: vertical;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+
+        .reflection-form textarea:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+        }
+
+        .submit-btn {
+            background: var(--accent-blue);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.1s;
+            display: inline-block;
+        }
+
+        .submit-btn:hover {
+            background: #2980b9;
+        }
+
+        .submit-btn:active {
+            transform: scale(0.98);
+        }
+
+        .save-feedback {
+            display: inline-block;
+            margin-left: 15px;
+            color: #38a169;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+    </style>
+</head>
+<body>
+
+<main class="wrapper">
+    
+    <!-- STARTSKJERM -->
+    <section id="selection-screen">
+        <h1>Materialer i Luftfart</h1>
+        <p class="intro-text">Velg en historisk hendelse for å studere casen og reflektere over lærdommen.</p>
+        
+        <div class="case-grid">
+            <button class="case-card" onclick="showCase('comet')">
+                <div class="case-image-placeholder" style="background-image: url('de_haviland.jpg');"></div>
+                <div class="case-content">
+                    <h3>DH. 106 Comet</h3>
+                    <p>Lærdommen om utmatting av trykkabiner fra verdens første kommersielle jetfly.</p>
+                </div>
+            </button>
+
+            <button class="case-card" onclick="showCase('aloha')">
+                <div class="case-image-placeholder" style="background-image: url('Aloha_Gemini.jpg');"></div>
+                <div class="case-content">
+                    <h3>Aloha Flight 243</h3>
+                    <p>Utfordringer med korrosjon og skjulte sprekker i en aldrende flyflåte.</p>
+                </div>
+            </button>
+
+            <button class="case-card" onclick="showCase('superpuma')">
+                <div class="case-image-placeholder" style="background-image: url('SuperPuma_Gemini.jpg');"></div>
+                <div class="case-content">
+                    <h3>Airbus Super Puma</h3>
+                    <p>Når moderne overvåkingssystemer ikke fanger opp materialtekniske problemer.</p>
+                </div>
+            </button>
+        </div>
+    </section>
+
+    <!-- DETALJSKJERM -->
+    <section id="detail-screen">
+        <div class="top-nav">
+            <button class="back-btn" onclick="showHome()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                Tilbake til oversikten
+            </button>
+        </div>
+
+        <!-- Fane-navigasjon -->
+        <div class="tabs-container">
+            <button class="tab-btn active" id="btn-article" onclick="switchTab('article')">📖 Casestudie (Lyd & Artikkel)</button>
+            <button class="tab-btn" id="btn-reflection" onclick="switchTab('reflection')">✍️ Refleksjon</button>
+        </div>
+
+        <!-- Fane 1: Artikkel og Lyd -->
+        <div class="tab-content active" id="tab-article">
+            <div id="article-content">
+                <!-- Innhold fylles dynamisk med JavaScript -->
+            </div>
+        </div>
+
+        <!-- Fane 2: Refleksjon -->
+        <div class="tab-content" id="tab-reflection">
+            <div class="reflection-container">
+                <div class="reflection-prompt" id="reflection-prompt">
+                    <!-- Spørsmål fylles dynamisk -->
+                </div>
+                
+                <div class="reflection-form">
+                    <textarea id="student-reflection" placeholder="Skriv ned dine tanker og refleksjoner her..."></textarea>
+                    <div>
+                        <button class="submit-btn" onclick="saveReflection()">Lagre refleksjon</button>
+                        <span id="save-msg" class="save-feedback">✓ Refleksjonen er lagret (lokalt)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+</main>
+
+<script>
+    // --- DATASTRUKTUR ---
+    // Her legger du inn hele artikkelteksten og refleksjonsspørsmålene dine.
+    const caseData = {
+        comet: {
+            title: "De Havilland DH. 106 Comet",
+            tags: ["Metallutmatting", "Trykkabin", "Syklisk belastning"],
+            audioFile: "De_Haviland_Comet.mp3",
+            
+            // Artikkel-innhold (HTML-formatert for rik tekst)
+            articleHtml: `
+<div id="dp-wrapper" class="dp-wrapper">
+    <p>Denne artikkelen sammenfatter de offisielle havarirapportene for De Havilland Comet-flyene G-ALYV, G-ALYP og G-ALYY. Dokumentene beskriver hvordan luftfartsindustrien gjennom disse hendelsene ble kjent med fenomenet metallutmatting i trykkabiner.</p>
+    <p>Rapportene dekker tre separate totalhavarier som fant sted over en periode p&aring; under ett &aring;r. Mens den f&oslash;rste ulykken opprinnelig ble tilskrevet v&aelig;rforhold, f&oslash;rte de to p&aring;f&oslash;lgende ulykkene til en omfattende teknisk revurdering av flytypens konstruksjon.</p>
+    
+    <h4>Del 1: G-ALYV &ndash; Strukturell svikt i uv&aelig;r</h4>
+    <img src="https://fagskoleninord.instructure.com/courses/2461/files/431660/preview" alt="Ministry of Civil Aviation Report C.A.P. 112 (G-ALYV)" data-api-endpoint="https://fagskoleninord.instructure.com/api/v1/courses/2461/files/431660" data-api-returntype="File" />
+    
+    <p>Den f&oslash;rste hendelsen involverte flyet G-ALYV som tok av fra Calcutta p&aring; vei mot Delhi. Kort tid etter avgang fra flyplassen fl&oslash;y maskinen inn i et omr&aring;de med tordenstormer, all kommunikasjon opph&oslash;rte, og flyet styrtet.</p>
+    <p>Vrakrestene ble funnet spredt over et stort omr&aring;de, noe som indikerte at flyet hadde g&aring;tt i oppl&oslash;sning mens det fortsatt var i luften, viktige deler av halepartiet og ytre vingeseksjoner ble funnet separert fra hovedvraket. Det ble observert brannskader p&aring; vraket, men ingen tegn til eksplosjon f&oslash;r selve sammenst&oslash;tet med bakken.</p>
+    <p>Granskingskommisjonen konkluderte med at ulykken skyldtes svikt i flyets struktur (&laquo;structural failure&raquo;). Rapporten pekte p&aring; at flyet hadde blitt utsatt for krefter som oversteg konstruksjonens t&aring;leevne. &Aring;rsaken til denne overbelastningen ble vurdert til &aring; v&aelig;re en kombinasjon av kraftige vertikale vindkast i tordenstormen og pilotens bruk av rorene for &aring; korrigere flyets stilling under de vanskelige forholdene.</p>
+    <p>Det er vesentlig &aring; merke seg at rapporten fra 1953 spesifikt utelukket feil ved designet eller materialene. P&aring; dette tidspunktet ble ikke utmatting i skroget vurdert som en faktor, og ulykken ble kategorisert som for&aring;rsaket av eksterne krefter (v&aelig;r).</p>
+    
+    <h4>Del 2: G-ALYP og G-ALYY &ndash; Havarier i klart v&aelig;r</h4>
+    <img src="https://fagskoleninord.instructure.com/courses/2461/files/431661/preview" alt="Civil Aviation Report C.A.P. 127 (G-ALYP &amp; G-ALYY)" data-api-endpoint="https://fagskoleninord.instructure.com/api/v1/courses/2461/files/431661" data-api-returntype="File" />
+    
+    <p>De to neste ulykkene endret forst&aring;elsen av problemet fundamentalt.</p>
+    <p>Flyet G-ALYP tok av fra Roma i klart v&aelig;r. Under normal stigning mot marsjh&oslash;yde opph&oslash;rte radiokontakten br&aring;tt midt i kommunikasjonen mellom t&aring;rnet og flyet. Vitner observerte vrakrester som falt i havet like s&oslash;r for &oslash;yen Elba. Omfattende berging av vrakdeler fra havbunnen viste at flyet hadde brutt sammen i luften.</p>
+    <p>Bare uker etter at Comet-fl&aring;ten hadde gjenopptatt flyvninger etter ulykken ved Elba, skjedde en nesten identisk hendelse. G-ALYY tok av fra Roma, klatret i klart v&aelig;r, og forsvant. Ingen n&oslash;dsignaler ble sendt. Da ulykken skjedde p&aring; dypt vann, ble ikke vraket hevet, men likhetene med G-ALYP gjorde at etterforskerne antok samme &aring;rsak.</p>
+    <p>Frav&aelig;ret av d&aring;rlig v&aelig;r i disse to tilfellene eliminerte storm som &aring;rsaksforklaring. Oppmerksomheten ble derfor rettet mot flyets konstruksjon, spesielt trykkabinen.</p>
+    
+    <img src="https://fagskoleninord.instructure.com/courses/2461/files/431639/preview" alt="image.png" data-api-endpoint="https://fagskoleninord.instructure.com/api/v1/courses/2461/files/431639" data-api-returntype="File" />
+    
+    <h4>Del 3: Teknisk granskning</h4>
+    <img src="https://fagskoleninord.instructure.com/courses/2461/files/431659/preview" alt="image.png" data-api-endpoint="https://fagskoleninord.instructure.com/api/v1/courses/2461/files/431659" data-api-returntype="File" />
+    
+    <p>For &aring; isolere &aring;rsaken ble det igangsatt en omfattende gransking ved Royal Aircraft Establishment (RAE). Et testfly av samme type ble plassert i en vanntank for &aring; simulere belastningene et flyskrog utsettes for n&aring;r det beveger seg fra bakkeniv&aring; til den tynne atmosf&aelig;ren i h&oslash;yden. Ved &aring; fylle tanken og skroget med vann, og deretter &oslash;ke og senke trykket inne i skroget, kunne ingeni&oslash;rene simulere syklusen med denne trykksettingen og avlastningen.</p>
+    <p>Etter et antall sykluser som tilsvarte omtrent 9 000 flytimer, oppsto det en revne i trykkabinen p&aring; testflyet. Revnen startet ved hj&oslash;rnet av et vindu og f&oslash;rte til en umiddelbar og omfattende svikt i strukturen. Dette samsvarte med funnene fra vraket av G-ALYP, hvor bruddflater indikerte at svikten hadde startet ved en skroggjennomf&oslash;ring (ADF-antenne &laquo;vinduet&raquo; p&aring; taket).</p>
+    
+    <!-- GRID: To bilder side-om-side -->
+    <div class="image-grid-2">
+        <img src="https://fagskoleninord.instructure.com/courses/2461/files/431643/preview" alt="image.png" data-api-endpoint="https://fagskoleninord.instructure.com/api/v1/courses/2461/files/431643" data-api-returntype="File" />
+        <img src="https://fagskoleninord.instructure.com/courses/2461/files/431640/preview" alt="image.png" data-api-endpoint="https://fagskoleninord.instructure.com/api/v1/courses/2461/files/431640" data-api-returntype="File" />
+    </div>
+
+    <p>Rapporten fra RAE identifiserer utmatting (eng: fatigue) i skroget som den direkte &aring;rsaken til ulykkene med G-ALYP og G-ALYY. Her er det&nbsp;to viktige punkter &aring; ta med seg:</p>
+    <ul>
+        <li>Spenningene (eng: stress) i metallet hoper seg opp i skroggjennomf&oslash;ringer. Under normalt kabintrykk n&aelig;rmet spenningen seg materialets flytegrense.</li>
+        <li>Naglehullene rundt skroggjennomf&oslash;ringene har sannsynligvis fungert som initieringspunkter for sprekker. Granskingen indikerer indikasjon p&aring; utmatting rundt disse hullene.</li>
+    </ul>
+    <p>Et sentralt sp&oslash;rsm&aring;l er hvorfor dette ikke ble oppdaget f&oslash;r flyet ble godkjent. Rapporten forklarer at en testseksjon av flyet tidligere hadde best&aring;tt tester med langt flere sykluser enn ulykkesflyene. &Aring;rsaken til dette er i f&oslash;lge rapporten et tredje viktig poeng som vi skal ta med oss videre i dette faget.</p>
+    <p>Testseksjonen hadde f&oslash;rst gjennomg&aring;tt en test med sv&aelig;rt h&oslash;yt overtrykk (nesten det dobbelte av normalt). Denne overbelastningen f&oslash;rte trolig til at metallet rundt vinduene ble strukket (plastisk deformasjon) og endret spenningsfordelingen lokalt. Dette gjorde paradoksalt nok testseksjonen sterkere mot utmatting enn de vanlige produksjonsflyene, som ikke hadde gjennomg&aring;tt en slik h&oslash;y overbelastning f&oslash;r bruk. Resultatet var at den opprinnelige testen gav en falsk trygghet om flyets levetid.</p>
+    
+    <div class="lesson-box">
+        <h4>Kilder og fullstendige rapporter</h4>
+        <p><a class="instructure_file_link" title="G-ALYV.pdf" href="https://fagskoleninord.instructure.com/courses/2461/files/431687?wrap=1" target="_blank" rel="noopener">Ministry of Civil Aviation Report C.A.P. 112 (G-ALYV)</a><br><br><a class="instructure_file_link" title="G-ALYP.pdf" href="https://fagskoleninord.instructure.com/courses/2461/files/431688?wrap=1" target="_blank" rel="noopener">Ministry of Transport and Civil Aviation Report C.A.P. 127 (G-ALYP &amp; G-ALYY)</a></p>
+    </div>
+</div>
+            `,
+            
+            // Refleksjonsspørsmål
+            reflectionPrompt: `
+                <h3>Refleksjon: Testing vs. Virkelighet</h3>
+                <p>Comet-ulykkene viste oss faren ved at testmiljøet (ekstremt overtrykk) endret materialegenskapene på en måte som skjulte det virkelige problemet. <br><br>Hvis du skulle designet en testrigg for et nytt flyskrog i dag, hvordan ville du sikret at testen reflekterer de faktiske påkjenningene flyet utsettes for gjennom et helt liv i drift?</p>
+            `
+        },
+
+        aloha: {
+            title: "Aloha Flight 243",
+            tags: ["Korrosjon", "MSD", "Vedlikehold"],
+            audioFile: "Aloha_flight_243.mp3",
+            articleHtml: `
+                <p>Sett inn din artikkeltekst om Aloha Flight 243 her...</p>
+                <div class="lesson-box">
+                    <h4>Viktig lærdom for industrien</h4>
+                    <p>Miljøfaktorer som fukt og saltvann i kombinasjon med mange flytimer krever ekstreme inspeksjonsrutiner for å fange opp Multiple Site Damage (MSD).</p>
+                </div>
+            `,
+            reflectionPrompt: `
+                <h3>Refleksjon: Det aldrende flyet</h3>
+                <p>Hvilke utfordringer oppstår i vedlikeholdsprogrammet når et fly opereres i varme og fuktige kystmiljøer sammenlignet med et tørt innlandsklima?</p>
+            `
+        },
+
+        superpuma: {
+            title: "Airbus Super Puma",
+            tags: ["Planetgir", "Sub-surface", "Sensorikk"],
+            audioFile: "Airbus_Super_Puma.mp3",
+            articleHtml: `
+                <p>Sett inn din artikkeltekst om Turøy-ulykken og Super Puma her...</p>
+                <div class="lesson-box">
+                    <h4>Viktig lærdom for industrien</h4>
+                    <p>Selv de mest avanserte magnetsensorene (chip detectors) og vibrasjonsanalysene kan ha blindsoner hvis utmattingssprekken vokser under overflaten uten å frigjøre spon.</p>
+                </div>
+            `,
+            reflectionPrompt: `
+                <h3>Refleksjon: Sensorikkens begrensninger</h3>
+                <p>Når moderne overvåkingssystemer gir oss falsk trygghet, hvordan kan vi som flyingeniører fange opp feil som vokser "usynlig" inne i et materialkomponent?</p>
+            `
+        }
+    };
+
+    // --- LOGIKK ---
+    
+    // Viser selve casen og bygger HTML
+    function showCase(id) {
+        const data = caseData[id];
+        
+        // 1. Bygg artikkel-fane
+        const articleContainer = document.getElementById('article-content');
+        const tagsHTML = data.tags.map(t => `<span class="tag">${t}</span>`).join('');
+        
+        articleContainer.innerHTML = `
+            <div class="article-header">
+                <h2>${data.title}</h2>
+                <div class="tag-container">${tagsHTML}</div>
+            </div>
+            
+            <div class="audio-container">
+                <p>🎧 Lytt til rapporten</p>
+                <audio class="audio-player" id="current-audio" controls>
+                    <source src="${data.audioFile}" type="audio/mpeg">
+                    Nettleseren din støtter ikke avspilling av lyd.
+                </audio>
+            </div>
+
+            <div class="article-body">
+                ${data.articleHtml}
+            </div>
+        `;
+
+        // 2. Bygg refleksjons-fane
+        const reflectionPromptContainer = document.getElementById('reflection-prompt');
+        reflectionPromptContainer.innerHTML = data.reflectionPrompt;
+        
+        // Tøm tekstboksen fra tidligere (eller man kunne hentet fra localStorage her)
+        document.getElementById('student-reflection').value = '';
+        document.getElementById('save-msg').style.opacity = '0';
+
+        // 3. Bytt visning og sett default fane
+        document.getElementById('selection-screen').style.display = 'none';
+        document.getElementById('detail-screen').style.display = 'block';
+        switchTab('article'); // Alltid start på artikkelen
+        window.scrollTo(0, 0);
+    }
+
+    // Returnerer til startskjermen
+    function showHome() {
+        // Pauser lyden hvis brukeren går tilbake
+        const audioEl = document.getElementById('current-audio');
+        if(audioEl) audioEl.pause();
+
+        document.getElementById('selection-screen').style.display = 'block';
+        document.getElementById('detail-screen').style.display = 'none';
+    }
+
+    // Bytter mellom Artikkel og Refleksjon
+    function switchTab(tabId) {
+        // Skjul alt
+        document.getElementById('tab-article').classList.remove('active');
+        document.getElementById('tab-reflection').classList.remove('active');
+        document.getElementById('btn-article').classList.remove('active');
+        document.getElementById('btn-reflection').classList.remove('active');
+
+        // Vis valgt fane
+        document.getElementById('tab-' + tabId).classList.add('active');
+        document.getElementById('btn-' + tabId).classList.add('active');
+        
+        // Hvis brukeren går til refleksjon, settes fokus i tekstboksen
+        if(tabId === 'reflection') {
+            document.getElementById('student-reflection').focus();
+        }
+    }
+
+    // Simulerer lagring av refleksjonsnotatet
+    function saveReflection() {
+        const text = document.getElementById('student-reflection').value;
+        if(text.trim() === '') {
+            alert('Vennligst skriv noe før du lagrer.');
+            return;
+        }
+        
+        // Her kunne man lagret teksten til en database eller LocalStorage.
+        // For demonstrasjon viser vi bare en "Lagret"-bekreftelse.
+        const msg = document.getElementById('save-msg');
+        msg.style.opacity = '1';
+        
+        setTimeout(() => {
+            msg.style.opacity = '0';
+        }, 3000); // Skjul meldingen etter 3 sekunder
+    }
+</script>
+
+</body>
+</html>
