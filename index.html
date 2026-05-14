@@ -507,7 +507,7 @@
         comet: {
             title: "De Havilland DH. 106 Comet",
             tags: ["Metallutmatting", "Trykkabin", "Syklisk belastning"],
-            audioFile: "De_Haviland_Comet.mp3",
+            audioFile: null,
             
             // Artikkel-innhold (HTML-formatert for rik tekst)
             articleHtml: `
@@ -570,7 +570,7 @@
         aloha: {
             title: "Aloha Flight 243",
             tags: ["Korrosjon", "MSD", "Vedlikehold"],
-            audioFile: "Aloha_flight_243.mp3",
+            audioFile: "aloha_flight_243.mp3",
             articleHtml: `
                 <p>Sett inn din artikkeltekst om Aloha Flight 243 her...</p>
                 <div class="lesson-box">
@@ -587,7 +587,7 @@
         superpuma: {
             title: "Airbus Super Puma",
             tags: ["Planetgir", "Sub-surface", "Sensorikk"],
-            audioFile: "Airbus_Super_Puma.mp3",
+            audioFile: "airbus_super_puma.mp3",
             articleHtml: `
                 <p>Sett inn din artikkeltekst om Turøy-ulykken og Super Puma her...</p>
                 <div class="lesson-box">
@@ -618,6 +618,7 @@
                 <div class="tag-container">${tagsHTML}</div>
             </div>
             
+            ${data.audioFile ? `
             <div class="audio-container">
                 <p>🎧 Lytt til rapporten</p>
                 <audio class="audio-player" id="current-audio" controls>
@@ -625,6 +626,7 @@
                     Nettleseren din støtter ikke avspilling av lyd.
                 </audio>
             </div>
+            ` : ''}
 
             <div class="article-body">
                 ${data.articleHtml}
