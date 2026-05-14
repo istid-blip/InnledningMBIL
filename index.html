@@ -27,8 +27,8 @@
         }
 
         h1, h2, h3 {
-    font-weight: 700;
-}
+            font-weight: 700;
+        }
 
         .wrapper {
             width: 100%;
@@ -82,7 +82,6 @@
             background-color: #ddd;
             background-size: cover;
             background-position: center;
-            /* HER KAN DU LEGGE TIL BAKGRUNNSBILDE I CSS SENERE */
         }
 
         .case-content {
@@ -138,7 +137,7 @@
         .detail-header {
             border-bottom: 3px solid var(--light-bg);
             padding-bottom: 20px;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .tag-container {
@@ -161,6 +160,11 @@
             margin-top: 30px;
             border-radius: 0 10px 10px 0;
         }
+
+        .audio-player {
+            margin-bottom: 25px;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
@@ -173,8 +177,7 @@
         
         <div class="case-grid">
             <button class="case-card" onclick="showCase('comet')">
-                <div class="case-image-placeholder" style="background-image: url('de_haviland.jpg');">
-                    </div>
+                <div class="case-image-placeholder" style="background-image: url('de_haviland.jpg');"></div>
                 <div class="case-content">
                     <h3>DH. 106 Comet</h3>
                     <p>Lærdommen om utmatting av trykkabiner fra verdens første kommersielle jetfly.</p>
@@ -214,19 +217,22 @@
             title: "De Havilland DH. 106 Comet",
             tags: ["Metallutmatting", "Trykkabin", "Spenning"],
             text: "Gjennom Comet-ulykkene lærte industrien at materialer oppfører seg annerledes under syklisk belastning i en trykkabin. Små sprekker kan vokse fra hjørner på vinduer og andre skroggjennomføringer.",
-            lesson: "Viktig lærdom: Tidligere tester ga falsk trygghet fordi overtrykk 'strakk' metallet og gjorde det kunstig sterkt mot utmatting."
+            lesson: "Viktig lærdom: Tidligere tester ga falsk trygghet fordi overtrykk 'strakk' metallet og gjorde det kunstig sterkt mot utmatting.",
+            audioFile: "De Haviland Comet.mp3"
         },
         aloha: {
             title: "Aloha Flight 243",
             tags: ["Korrosjon", "Kaldliming", "MSD"],
             text: "Denne ulykken viste faren med 'Multiple Site Damage' (MSD), hvor mange små sprekker i et skrog samler seg og fører til en eksplosiv dekompresjon.",
-            lesson: "Viktig lærdom: Miljøfaktorer som fukt og saltvann i kombinasjon med mange flytimer krever ekstreme inspeksjonsrutiner."
+            lesson: "Viktig lærdom: Miljøfaktorer som fukt og saltvann i kombinasjon med mange flytimer krever ekstreme inspeksjonsrutiner.",
+            audioFile: "Aloha flight 243.mp3"
         },
         superpuma: {
             title: "Airbus Super Puma (Turøy)",
             tags: ["Planetgir", "Girkasse", "Sub-surface"],
             text: "Her sviktet et planetgir på grunn av en utmattingssprekk som startet under overflaten og vokste uten å avgi metallpartikler.",
-            lesson: "Viktig lærdom: Selv de mest avanserte magnetsensorene og vibrasjonsanalysene kan ha blindsoner hvis sprekken vokser skjult."
+            lesson: "Viktig lærdom: Selv de mest avanserte magnetsensorene og vibrasjonsanalysene kan ha blindsoner hvis sprekken vokser skjult.",
+            audioFile: "Airbus Super Puma.mp3"
         }
     };
 
@@ -236,11 +242,18 @@
         
         const tagsHTML = data.tags.map(t => `<span class="tag">${t}</span>`).join('');
 
+        // Her integreres avspilleren dynamisk basert på den valgte casen
         container.innerHTML = `
             <div class="detail-header">
                 <h2>${data.title}</h2>
                 <div class="tag-container">${tagsHTML}</div>
             </div>
+            
+            <audio class="audio-player" controls>
+                <source src="${data.audioFile}" type="audio/mpeg">
+                Nettleseren din støtter ikke avspilling av lyd.
+            </audio>
+
             <p style="font-size: 1.2rem; line-height: 1.6;">${data.text}</p>
             <div class="lesson-box">
                 <strong>Hva lærte vi?</strong><br>
@@ -254,6 +267,12 @@
     }
 
     function showHome() {
+        // Pauser lyden hvis brukeren går tilbake til oversikten
+        const audioElements = document.getElementsByTagName('audio');
+        for(let i = 0; i < audioElements.length; i++) {
+            audioElements[i].pause();
+        }
+
         document.getElementById('selection-screen').style.display = 'block';
         document.getElementById('detail-screen').style.display = 'none';
     }
