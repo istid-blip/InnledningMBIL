@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="no">
 <head>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Materialer i Luftfart - Casestudier</title>
@@ -38,6 +37,35 @@
             padding: 40px 20px;
             /* text-align: center; (Fjernet for at innhold i artikkel skal flyte bedre) */
         }
+
+        /* Lato Regular */
+@font-face {
+  font-display: swap; 
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 400;
+  src: url('font/Lato-Regular.woff2') format('woff2'); 
+}
+
+/* Lato Italic */
+@font-face {
+  font-display: swap; 
+  font-family: 'Lato';
+  font-style: italic;
+  font-weight: 400;
+  src: url('font/Lato-Italic.woff2') format('woff2');
+}
+
+/* Lato Bold */
+@font-face {
+  font-display: swap; 
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 700;
+  src: url('font/Lato-Bold.woff2') format('woff2');
+}
+
+
 
         /* --- START-SKJERM (GRID) --- */
         #selection-screen {
@@ -501,6 +529,17 @@
 </main>
 
 <script>
+    // --- AUDIO STATE ---
+    // Objekt for å lagre avspillingsposisjon for hver case
+    const audioSavedTimes = {
+        comet: 0,
+        aloha: 0,
+        superpuma: 0
+    };
+    
+    // Variabel for å holde styr på hvilken case som er aktiv nå
+    let currentCaseId = null;
+
     // --- DATASTRUKTUR ---
     // Her legger du inn hele artikkelteksten og refleksjonsspørsmålene dine.
     const caseData = {
@@ -607,6 +646,7 @@
     
     // Viser selve casen og bygger HTML
     function showCase(id) {
+        currentCaseId = id; // Husk hvilken case vi er inne på
         const data = caseData[id];
         
         // 1. Bygg artikkel-fane
@@ -647,13 +687,33 @@
         document.getElementById('detail-screen').style.display = 'block';
         switchTab('article'); // Alltid start på artikkelen
         window.scrollTo(0, 0);
+
+        // 4. Håndter lydspilleren og gjenopprett posisjon
+        const audioEl = document.getElementById('current-audio');
+        if (audioEl) {
+            // Sett lagret tidspunkt (hvis vi har det)
+            audioEl.currentTime = audioSavedTimes[id];
+            
+            // Lytt etter oppdateringer i tiden slik at vi kan lagre kontinuerlig
+            // i tilfelle brukeren laster inn siden på nytt eller lukker den
+            audioEl.addEventListener('timeupdate', function() {
+                audioSavedTimes[id] = audioEl.currentTime;
+            });
+        }
     }
 
     // Returnerer til startskjermen
     function showHome() {
-        // Pauser lyden hvis brukeren går tilbake
         const audioEl = document.getElementById('current-audio');
-        if(audioEl) audioEl.pause();
+        if(audioEl) {
+            // Lagre posisjonen rett før vi pauser (for sikkerhets skyld)
+            if(currentCaseId) {
+                audioSavedTimes[currentCaseId] = audioEl.currentTime;
+            }
+            audioEl.pause();
+        }
+        
+        currentCaseId = null; // Nullstill aktiv case
 
         document.getElementById('selection-screen').style.display = 'block';
         document.getElementById('detail-screen').style.display = 'none';
@@ -661,17 +721,14 @@
 
     // Bytter mellom Artikkel og Refleksjon
     function switchTab(tabId) {
-        // Skjul alt
         document.getElementById('tab-article').classList.remove('active');
         document.getElementById('tab-reflection').classList.remove('active');
         document.getElementById('btn-article').classList.remove('active');
         document.getElementById('btn-reflection').classList.remove('active');
 
-        // Vis valgt fane
         document.getElementById('tab-' + tabId).classList.add('active');
         document.getElementById('btn-' + tabId).classList.add('active');
         
-        // Hvis brukeren går til refleksjon, settes fokus i tekstboksen
         if(tabId === 'reflection') {
             document.getElementById('student-reflection').focus();
         }
@@ -681,18 +738,16 @@
     function saveReflection() {
         const text = document.getElementById('student-reflection').value;
         if(text.trim() === '') {
-            alert('Vennligst skriv noe før du lagrer.');
+            showCustomAlert('Vennligst skriv noe før du lagrer.'); // Byttet ut alert() her
             return;
         }
         
-        // Her kunne man lagret teksten til en database eller LocalStorage.
-        // For demonstrasjon viser vi bare en "Lagret"-bekreftelse.
         const msg = document.getElementById('save-msg');
         msg.style.opacity = '1';
         
         setTimeout(() => {
             msg.style.opacity = '0';
-        }, 3000); // Skjul meldingen etter 3 sekunder
+        }, 3000);
     }
 </script>
 
