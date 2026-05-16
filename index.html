@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="no">
 <head>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&family=Merriweather:ital,wght@0,300;0,700;1,300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Materialer i Luftfart - Casestudier</title>
@@ -9,7 +9,7 @@
         :root {
             --primary-blue: #1a4a7c;
             --accent-blue: #3498db;
-            --light-bg: #f4f7f6;
+            --light-bg: #ffffff; /* Endret til hvit bakgrunn for Canvas */
             --card-white: #ffffff;
             --text-dark: #2c3e50;
             --text-body: #4a5568;
@@ -242,7 +242,7 @@
 
         /* Editorial Article Styling */
         .article-body {
-            font-family: 'Merriweather', serif; /* Serif for bedre lesbarhet i lange tekster */
+            font-family: 'Lato', sans-serif; /* Endret til Lato for enhetlig Canvas-design */
             font-size: 1.15rem;
             line-height: 1.8;
             color: #333;
@@ -507,43 +507,38 @@
         comet: {
             title: "De Havilland DH. 106 Comet",
             tags: ["Metallutmatting", "Trykkabin", "Syklisk belastning"],
-            audioFile: null,
+            audioFile: "de_haviland_comet.mp3",
             
             // Artikkel-innhold (HTML-formatert for rik tekst)
             articleHtml: `
 <div id="dp-wrapper" class="dp-wrapper">
+    <img src="bilderhaviland/havilandbakken.png" alt="Ministry of Civil Aviation Report C.A.P. 112 (G-ALYV)"/>
     <p>Denne artikkelen sammenfatter de offisielle havarirapportene for De Havilland Comet-flyene G-ALYV, G-ALYP og G-ALYY. Dokumentene beskriver hvordan luftfartsindustrien gjennom disse hendelsene ble kjent med fenomenet metallutmatting i trykkabiner.</p>
     <p>Rapportene dekker tre separate totalhavarier som fant sted over en periode p&aring; under ett &aring;r. Mens den f&oslash;rste ulykken opprinnelig ble tilskrevet v&aelig;rforhold, f&oslash;rte de to p&aring;f&oslash;lgende ulykkene til en omfattende teknisk revurdering av flytypens konstruksjon.</p>
     
     <h4>Del 1: G-ALYV &ndash; Strukturell svikt i uv&aelig;r</h4>
-    <img src="https://fagskoleninord.instructure.com/courses/2461/files/431660/preview" alt="Ministry of Civil Aviation Report C.A.P. 112 (G-ALYV)" data-api-endpoint="https://fagskoleninord.instructure.com/api/v1/courses/2461/files/431660" data-api-returntype="File" />
-    
+    <img src="bilderhaviland/havilandkart.png" alt="Ministry of Civil Aviation Report C.A.P. 112 (G-ALYV)"/>    
     <p>Den f&oslash;rste hendelsen involverte flyet G-ALYV som tok av fra Calcutta p&aring; vei mot Delhi. Kort tid etter avgang fra flyplassen fl&oslash;y maskinen inn i et omr&aring;de med tordenstormer, all kommunikasjon opph&oslash;rte, og flyet styrtet.</p>
     <p>Vrakrestene ble funnet spredt over et stort omr&aring;de, noe som indikerte at flyet hadde g&aring;tt i oppl&oslash;sning mens det fortsatt var i luften, viktige deler av halepartiet og ytre vingeseksjoner ble funnet separert fra hovedvraket. Det ble observert brannskader p&aring; vraket, men ingen tegn til eksplosjon f&oslash;r selve sammenst&oslash;tet med bakken.</p>
     <p>Granskingskommisjonen konkluderte med at ulykken skyldtes svikt i flyets struktur (&laquo;structural failure&raquo;). Rapporten pekte p&aring; at flyet hadde blitt utsatt for krefter som oversteg konstruksjonens t&aring;leevne. &Aring;rsaken til denne overbelastningen ble vurdert til &aring; v&aelig;re en kombinasjon av kraftige vertikale vindkast i tordenstormen og pilotens bruk av rorene for &aring; korrigere flyets stilling under de vanskelige forholdene.</p>
     <p>Det er vesentlig &aring; merke seg at rapporten fra 1953 spesifikt utelukket feil ved designet eller materialene. P&aring; dette tidspunktet ble ikke utmatting i skroget vurdert som en faktor, og ulykken ble kategorisert som for&aring;rsaket av eksterne krefter (v&aelig;r).</p>
     
     <h4>Del 2: G-ALYP og G-ALYY &ndash; Havarier i klart v&aelig;r</h4>
-    <img src="https://fagskoleninord.instructure.com/courses/2461/files/431661/preview" alt="Civil Aviation Report C.A.P. 127 (G-ALYP &amp; G-ALYY)" data-api-endpoint="https://fagskoleninord.instructure.com/api/v1/courses/2461/files/431661" data-api-returntype="File" />
+    <img src="bilderhaviland/delerhaviland.png" alt="Civil Aviation Report C.A.P. 127 (G-ALYP &amp; G-ALYY)"/>
     
     <p>De to neste ulykkene endret forst&aring;elsen av problemet fundamentalt.</p>
     <p>Flyet G-ALYP tok av fra Roma i klart v&aelig;r. Under normal stigning mot marsjh&oslash;yde opph&oslash;rte radiokontakten br&aring;tt midt i kommunikasjonen mellom t&aring;rnet og flyet. Vitner observerte vrakrester som falt i havet like s&oslash;r for &oslash;yen Elba. Omfattende berging av vrakdeler fra havbunnen viste at flyet hadde brutt sammen i luften.</p>
     <p>Bare uker etter at Comet-fl&aring;ten hadde gjenopptatt flyvninger etter ulykken ved Elba, skjedde en nesten identisk hendelse. G-ALYY tok av fra Roma, klatret i klart v&aelig;r, og forsvant. Ingen n&oslash;dsignaler ble sendt. Da ulykken skjedde p&aring; dypt vann, ble ikke vraket hevet, men likhetene med G-ALYP gjorde at etterforskerne antok samme &aring;rsak.</p>
     <p>Frav&aelig;ret av d&aring;rlig v&aelig;r i disse to tilfellene eliminerte storm som &aring;rsaksforklaring. Oppmerksomheten ble derfor rettet mot flyets konstruksjon, spesielt trykkabinen.</p>
     
-    <img src="https://fagskoleninord.instructure.com/courses/2461/files/431639/preview" alt="image.png" data-api-endpoint="https://fagskoleninord.instructure.com/api/v1/courses/2461/files/431639" data-api-returntype="File" />
+    
     
     <h4>Del 3: Teknisk granskning</h4>
-    <img src="https://fagskoleninord.instructure.com/courses/2461/files/431659/preview" alt="image.png" data-api-endpoint="https://fagskoleninord.instructure.com/api/v1/courses/2461/files/431659" data-api-returntype="File" />
-    
+    <img src="bilderhaviland/basenghaviland.png" />      
     <p>For &aring; isolere &aring;rsaken ble det igangsatt en omfattende gransking ved Royal Aircraft Establishment (RAE). Et testfly av samme type ble plassert i en vanntank for &aring; simulere belastningene et flyskrog utsettes for n&aring;r det beveger seg fra bakkeniv&aring; til den tynne atmosf&aelig;ren i h&oslash;yden. Ved &aring; fylle tanken og skroget med vann, og deretter &oslash;ke og senke trykket inne i skroget, kunne ingeni&oslash;rene simulere syklusen med denne trykksettingen og avlastningen.</p>
     <p>Etter et antall sykluser som tilsvarte omtrent 9 000 flytimer, oppsto det en revne i trykkabinen p&aring; testflyet. Revnen startet ved hj&oslash;rnet av et vindu og f&oslash;rte til en umiddelbar og omfattende svikt i strukturen. Dette samsvarte med funnene fra vraket av G-ALYP, hvor bruddflater indikerte at svikten hadde startet ved en skroggjennomf&oslash;ring (ADF-antenne &laquo;vinduet&raquo; p&aring; taket).</p>
     
-    <!-- GRID: To bilder side-om-side -->
-    <div class="image-grid-2">
-        <img src="https://fagskoleninord.instructure.com/courses/2461/files/431643/preview" alt="image.png" data-api-endpoint="https://fagskoleninord.instructure.com/api/v1/courses/2461/files/431643" data-api-returntype="File" />
-        <img src="https://fagskoleninord.instructure.com/courses/2461/files/431640/preview" alt="image.png" data-api-endpoint="https://fagskoleninord.instructure.com/api/v1/courses/2461/files/431640" data-api-returntype="File" />
-    </div>
+    <img src="bilderhaviland/vinduhaviland.png" />  
 
     <p>Rapporten fra RAE identifiserer utmatting (eng: fatigue) i skroget som den direkte &aring;rsaken til ulykkene med G-ALYP og G-ALYY. Her er det&nbsp;to viktige punkter &aring; ta med seg:</p>
     <ul>
@@ -552,8 +547,14 @@
     </ul>
     <p>Et sentralt sp&oslash;rsm&aring;l er hvorfor dette ikke ble oppdaget f&oslash;r flyet ble godkjent. Rapporten forklarer at en testseksjon av flyet tidligere hadde best&aring;tt tester med langt flere sykluser enn ulykkesflyene. &Aring;rsaken til dette er i f&oslash;lge rapporten et tredje viktig poeng som vi skal ta med oss videre i dette faget.</p>
     <p>Testseksjonen hadde f&oslash;rst gjennomg&aring;tt en test med sv&aelig;rt h&oslash;yt overtrykk (nesten det dobbelte av normalt). Denne overbelastningen f&oslash;rte trolig til at metallet rundt vinduene ble strukket (plastisk deformasjon) og endret spenningsfordelingen lokalt. Dette gjorde paradoksalt nok testseksjonen sterkere mot utmatting enn de vanlige produksjonsflyene, som ikke hadde gjennomg&aring;tt en slik h&oslash;y overbelastning f&oslash;r bruk. Resultatet var at den opprinnelige testen gav en falsk trygghet om flyets levetid.</p>
-    
+       
+    <!-- GRID: To bilder side-om-side -->
+    <div class="image-grid-2">
+        <img src="bilderhaviland/adfvinduhaviland.png" alt="ADF-vindu" />
+        <img src="bilderhaviland/sprekkerhaviland.png" alt="Sprekker" />
+    </div>
     <div class="lesson-box">
+    
         <h4>Kilder og fullstendige rapporter</h4>
         <p><a class="instructure_file_link" title="G-ALYV.pdf" href="https://fagskoleninord.instructure.com/courses/2461/files/431687?wrap=1" target="_blank" rel="noopener">Ministry of Civil Aviation Report C.A.P. 112 (G-ALYV)</a><br><br><a class="instructure_file_link" title="G-ALYP.pdf" href="https://fagskoleninord.instructure.com/courses/2461/files/431688?wrap=1" target="_blank" rel="noopener">Ministry of Transport and Civil Aviation Report C.A.P. 127 (G-ALYP &amp; G-ALYY)</a></p>
     </div>
